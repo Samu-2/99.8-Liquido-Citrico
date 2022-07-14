@@ -1,6 +1,6 @@
 package cl.uchile.dcc.citricliquid.model.board;
 
-import cl.uchile.dcc.citricliquid.model.Player;
+import cl.uchile.dcc.citricliquid.model.entity.Player;
 import java.util.HashSet;
 import java.util.Set;
 import org.jetbrains.annotations.NotNull;
@@ -29,14 +29,14 @@ public class Panel {
    * Restores a player's HP in 1.
    */
   private static void applyHealTo(final @NotNull Player player) {
-    player.setCurrentHp(player.getCurrentHp() + 1);
+    player.setHp(player.getHp() + 1);
   }
 
   /**
    * Reduces the player's star count by the D6 roll multiplied by the player's norma level.
    */
   private static void applyDropTo(final @NotNull Player player) {
-    player.reduceStarsBy(player.roll() * player.getNormaLevel());
+    player.reduceStarsBy(player.roll() * player.getNorma());
   }
 
   /**
@@ -44,7 +44,7 @@ public class Panel {
    * norma level and three.
    */
   private static void applyBonusTo(final @NotNull Player player) {
-    player.increaseStarsBy(player.roll() * Math.min(player.getNormaLevel(), 3));
+    player.increaseStarsBy(player.roll() * Math.min(player.getNorma(), 3));
   }
 
   /**

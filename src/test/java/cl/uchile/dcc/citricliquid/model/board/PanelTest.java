@@ -1,6 +1,6 @@
 package cl.uchile.dcc.citricliquid.model.board;
 
-import cl.uchile.dcc.citricliquid.model.Player;
+import cl.uchile.dcc.citricliquid.model.entity.Player;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -74,13 +74,13 @@ class PanelTest {
 
   @Test
   public void homePanelTest() {
-    assertEquals(suguri.getMaxHp(), suguri.getCurrentHp());
+    assertEquals(suguri.getMaxHp(), suguri.getHp());
     testHomePanel.activatedBy(suguri);
-    assertEquals(suguri.getMaxHp(), suguri.getCurrentHp());
+    assertEquals(suguri.getMaxHp(), suguri.getHp());
 
-    suguri.setCurrentHp(1);
+    suguri.setHp(1);
     testHomePanel.activatedBy(suguri);
-    assertEquals(2, suguri.getCurrentHp());
+    assertEquals(2, suguri.getHp());
   }
 
   @Test
