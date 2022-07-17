@@ -1,5 +1,7 @@
 package cl.uchile.dcc.citricliquid.model.entity;
 
+import cl.uchile.dcc.citricliquid.model.modules.Norma;
+
 /**
  * This class represents a player in the game 99.7% Citric Liquid.
  *
@@ -42,6 +44,12 @@ public class Player extends Entity {
                 final int evd) {
     // The player spawns with maxHP
     this(name, maxHp, atk, def, evd, maxHp, new Norma());
+  }
+
+  // ============= DEBUG ======================
+
+  public Norma debugGetNorma() {
+    return this.norma;
   }
 
   // ============= Getters =============
@@ -90,7 +98,7 @@ public class Player extends Entity {
    */
   //TODO: CHECK THE LOGIC BEHIND THE METHOD, NEEDS TO BE REPLACED, NORMA SHOULD BE THE ONE
   //     THAT IS RESPONSIBLE FOR THE NORMA CLEAR
-  public void normaClear() { this.norma.clear(); }
+  public void normaCheck() { this.norma.check(); }
 
 
   // ================= Obj Utilities ===============

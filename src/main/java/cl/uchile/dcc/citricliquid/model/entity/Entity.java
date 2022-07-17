@@ -86,17 +86,10 @@ public class Entity {
    * inclusive.
    */
   public void setHp(int quantity) { this.hp = Math.max(Math.min(quantity, maxHp), 0); }
-
   public void setName (String name) { this.name = name; }
-
-  public void setMaxHp (int maxHp) { this.maxHp = maxHp; }
-
   public void setAtk (int atk) {this.atk = atk; }
-
   public void setDef (int def) {this.def = def; }
-
   public void setEvd (int evd) {this.evd = evd; }
-
 
   // ================ METHODS ==============================
   /**
@@ -120,7 +113,6 @@ public class Entity {
   public Entity copy() {
     return new Entity(name, maxHp, atk, def, evd, hp, this.random);
   }
-
   public boolean equals(Object o) {
     if (o == null) {
       return false;

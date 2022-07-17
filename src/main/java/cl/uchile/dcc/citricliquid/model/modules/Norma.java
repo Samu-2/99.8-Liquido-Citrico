@@ -1,4 +1,4 @@
-package cl.uchile.dcc.citricliquid.model.entity;
+package cl.uchile.dcc.citricliquid.model.modules;
 
 /**
 * This abstract class it's used as a base for all the entities.
@@ -45,9 +45,11 @@ public class Norma {
 
   // TODO: MAKE THIS METHOD PRIVATE, IT SHOULD BE ONLY RESPONSABILITY OF NORMA CLASS DO THE
   //       NORMA CLEAR.
-  public void clear() {
-    this.level += 1;
-  }
+  private void clear() { this.level += 1; }
+
+  // Debug clear so panels tests can run
+  public void debugClear() { this.level += 1; }
+
   public void check() {
     // This is so it can do the normas in one go
     // But also doens't go up on to 6 without the

@@ -1,5 +1,7 @@
 package cl.uchile.dcc.citricliquid.model.entity;
 
+import cl.uchile.dcc.citricliquid.model.modules.Norma;
+
 public class WildUnit extends Entity {
   private Norma norma;
 

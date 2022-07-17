@@ -1,5 +1,6 @@
 package cl.uchile.dcc.citricliquid.model.entity;
 
+import cl.uchile.dcc.citricliquid.model.modules.Norma;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,11 +72,4 @@ public class NormaTest {
     norma.check();
     Assertions.assertEquals(1, norma.getLevel());
   }
-
-  @Test
-  public void normaClearTest() {
-    norma.clear();
-    Assertions.assertEquals(2, norma.getLevel());
-  }
-
 }

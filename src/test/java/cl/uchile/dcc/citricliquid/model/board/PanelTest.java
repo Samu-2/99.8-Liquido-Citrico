@@ -103,7 +103,7 @@ class PanelTest {
       expectedStars += roll * Math.min(3, normaLvl);
       assertEquals(expectedStars, suguri.getStars(),
                    "Test failed with seed: " + testSeed);
-      suguri.normaClear();
+      suguri.debugGetNorma().debugClear();
     }
   }
 
@@ -120,7 +120,7 @@ class PanelTest {
       expectedStars = Math.max(expectedStars - roll * normaLvl, 0);
       assertEquals(expectedStars, suguri.getStars(),
                    "Test failed with seed: " + testSeed);
-      suguri.normaClear();
+      suguri.debugGetNorma().debugClear();
     }
   }
   // endregion

@@ -53,11 +53,8 @@ public class PlayerTest {
     suguri.increaseWinsBy(2);
     Assertions.assertEquals(3, suguri.getWins());
   }
-  @Test
-  public void normaClearCheck() {
-    suguri.normaClear();
-    Assertions.assertEquals(2, suguri.getNorma());
-  }
+
+  // DELETED: normaClearCheck, NOW RESPONSABILITY OF NORMA CLASS
 
   @Test
   public void copyTest() {
@@ -70,18 +67,6 @@ public class PlayerTest {
   }
 
   // region : consistency tests
-
-  @RepeatedTest(100)
-  public void normaClearConsistencyTest() {
-    final long testSeed = new Random().nextLong();
-    // We're gonna test for 0 to 5 norma clears
-    final int iterations = Math.abs(new Random(testSeed).nextInt(6));
-    final int expectedNorma = suguri.getNorma() + iterations;
-    for (int it = 0; it < iterations; it++) {
-      suguri.normaClear();
-    }
-    Assertions.assertEquals(expectedNorma, suguri.getNorma(),
-                            "Test failed with random seed: " + testSeed);
-  }
+  // DELETED: normaClearConsistencyTest, NOW RESPONSABILITY OF NORMA CLASS
   // endregion
 }
