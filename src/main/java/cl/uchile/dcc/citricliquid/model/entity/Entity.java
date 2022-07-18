@@ -67,8 +67,9 @@ public class Entity {
    * <b>SETTERS</b> <br>
    * Sets the asked attribute of the Entity.
    */
-  public void setHp(int hp)        { this.hp = Math.min(Math.max(hp, 0), this.maxHp); }
   public void setName(String name) { this.name = name; }
+  public void setMaxHp(int maxHp)  { this.maxHp = maxHp; }
+  public void setHp(int hp)        { this.hp = Math.min(Math.max(hp, 0), this.maxHp); }
   public void setAtk(int atk)      { this.atk = atk; }
   public void setDef(int def)      { this.def = def; }
   public void setEvd(int evd)      { this.evd = evd; }

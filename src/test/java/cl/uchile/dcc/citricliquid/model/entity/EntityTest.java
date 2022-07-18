@@ -11,47 +11,108 @@ public class EntityTest {
   private final static String ENTITY_NAME = "Ghost";
   private Entity ghost;
 
+  /**
+   * <b>SETUP</b> <br>
+   */
   @BeforeEach
   public void setUp() {
     ghost = new Entity(ENTITY_NAME, 4, 1, -1, 2, 4);
   }
 
-  @Test
-  public void constructorTest() {
-    final var expectedGhost = new Entity(ENTITY_NAME, 4, 1, -1, 2, 4);
-    Assertions.assertEquals(expectedGhost, ghost);
-  }
+  /**
+   * <b>TESTS</b> <br>
+   * <i>Equals</i>
+   */
 
   @Test
   public void testEquals() {
-    final var o = new Object();
+    var o = new Object();
     Assertions.assertNotEquals(ghost, o);
     Assertions.assertEquals(ghost, ghost);
-    final var expectedGhost = new Entity(ENTITY_NAME, 4, 1, -1, 2, 4);
+    o = new Entity(ENTITY_NAME, 4, 1, -1, 2, 4);
+    Assertions.assertEquals(o, ghost);
+  }
+
+  /**
+   * <i>Constructor</i>
+   */
+
+  @Test
+  public void copyConstructorCopy() {
+    final var expectedGhost = new Entity(ghost);
     Assertions.assertEquals(expectedGhost, ghost);
   }
 
   @Test
-  public void hitPointsTest() {
-    Assertions.assertEquals(ghost.getMaxHp(), ghost.getHp());
+  public void defaultConstructorTest() {
+    final var expectedGhost = new Entity(ENTITY_NAME, 4, 1, -1, 2);
+    Assertions.assertEquals(expectedGhost, ghost);
+  }
+
+  /**
+   * <i>Getters, setters</i>
+   */
+  @Test
+  public void nameTest() {
+    Assertions.assertEquals(ENTITY_NAME, ghost.getName());
+    ghost.setName("New name");
+    Assertions.assertEquals("New name", ghost.getName());
+  }
+  @Test
+  public void maxHpTest() {
+    Assertions.assertEquals(4, ghost.getMaxHp());
+    ghost.setMaxHp(5);
+    Assertions.assertEquals(5, ghost.getMaxHp());
+  }
+  @Test
+  public void hpTest() {
+    Assertions.assertEquals(4, ghost.getHp());
     ghost.setHp(2);
     Assertions.assertEquals(2, ghost.getHp());
-    ghost.setHp(-1);
+  }
+  @Test
+  public void atkTest() {
+    Assertions.assertEquals(1, ghost.getAtk());
+    ghost.setAtk(2);
+    Assertions.assertEquals(2, ghost.getAtk());
+  }
+  @Test
+  public void defTest() {
+    Assertions.assertEquals(-1, ghost.getDef());
+    ghost.setDef(2);
+    Assertions.assertEquals(2, ghost.getDef());
+  }
+  @Test
+  public void evdTest() {
+    Assertions.assertEquals(2, ghost.getEvd());
+    ghost.setEvd(3);
+    Assertions.assertEquals(3, ghost.getEvd());
+  }
+
+  /**
+   * <i>Methods</i>
+   */
+  @Test
+  public void damageTest() {
+    Assertions.assertTrue  (ghost.damage(2));
+    Assertions.assertEquals(2, ghost.getHp());
+    Assertions.assertFalse (ghost.damage(3));
     Assertions.assertEquals(0, ghost.getHp());
-    ghost.setHp(5);
+  }
+  @Test
+  public void healTest() {
+    Assertions.assertTrue(ghost.heal(2));
+    Assertions.assertEquals(4, ghost.getHp());
+    ghost.setHp(0);
+    Assertions.assertFalse(ghost.heal(1));
+    Assertions.assertEquals(1, ghost.getHp());
+    Assertions.assertTrue(ghost.heal(999));
     Assertions.assertEquals(4, ghost.getHp());
   }
 
-  @Test
-  public void copyTest() {
-    final var expectedGhost = new Entity(ENTITY_NAME, 4, 1, -1, 2);
-    final var actualGhost = new Entity(ghost);
-    // Checks that the copied player have the same parameters as the original
-    Assertions.assertTrue(ghost.equals(expectedGhost));
-    // Checks that the copied player doesn't reference the same object
-    Assertions.assertNotSame(expectedGhost, actualGhost);
-  }
-
+  /**
+   * <b>REPEATED TESTS</b> <br>
+   */
   @RepeatedTest(100)
   public void hitPointsConsistencyTest() {
     final long testSeed = new Random().nextLong();

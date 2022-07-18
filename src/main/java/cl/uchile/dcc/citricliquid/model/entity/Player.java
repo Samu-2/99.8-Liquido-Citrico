@@ -27,12 +27,11 @@ public class Player extends Entity {
    * @param hp the hp the character.
    * @param norma the norma of the character.
    */
-  private Player(final String name, final int maxHp, final int atk, final int def, final int evd, final int hp,
-                 final Norma norma) {
+  private Player(String name, int maxHp, int atk, int def, int evd, int hp, Norma norma) {
     super(name, maxHp, atk, def, evd, hp);
     this.norma = norma;
   }
-  public Player(final String name, final int maxHp, final int atk, final int def, final int evd) {
+  public Player(String name, int maxHp, int atk, int def, int evd) {
     this(name, maxHp, atk, def, evd, maxHp, new Norma());
   }
   public Player(Player player) {

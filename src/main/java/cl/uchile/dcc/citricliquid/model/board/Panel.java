@@ -1,10 +1,7 @@
 package cl.uchile.dcc.citricliquid.model.board;
 
 import cl.uchile.dcc.citricliquid.model.entity.Player;
-import java.util.HashSet;
-import java.util.Set;
 
-import javafx.scene.shape.Path;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -21,7 +18,6 @@ public class Panel {
    */
   private PanelType type;
   private Panel northPanel, southPanel, eastPanel, westPanel;
-
   private PathWay pathWay;
 
   /**
@@ -69,10 +65,17 @@ public class Panel {
   /**
    * <b>SETTERS</b>
    */
-  
+
+  public void setType(PanelType type)         { this.type = type; }
+  public void setPathWay(PathWay pathWay)     { this.pathWay = pathWay; }
   public void setNorthPanel(Panel northPanel) { this.northPanel = northPanel; }
+  public void setSouthPanel(Panel southPanel) { this.southPanel = southPanel; }
+  public void setEastPanel(Panel eastPanel)   { this.eastPanel = eastPanel; }
+  public void setWestPanel(Panel westPanel)   { this.westPanel = westPanel; }
 
   /**
+   * <b>METHODS</b> <br>
+   *
    * Restores a player's HP in 1.
    */
   private static void applyHealTo(final @NotNull Player player) {
@@ -83,7 +86,7 @@ public class Panel {
    * Reduces the player's star count by the D6 roll multiplied by the player's norma level.
    */
   private static void applyDropTo(final @NotNull Player player) {
-    player.getNorma().substractStars(player.roll() * player.getNorma().getLevel());
+    player.getNorma().subtractStars(player.roll() * player.getNorma().getLevel());
   }
 
   /**
@@ -92,6 +95,19 @@ public class Panel {
    */
   private static void applyBonusTo(final @NotNull Player player) {
     player.getNorma().addStars(player.roll() * Math.min(player.getNorma().getLevel(), 3));
+  }
+
+  /**
+   * Get's the next panel in the direction
+   */
+  public Panel getNextPanel(PathWay pathWay) throws IllegalArgumentException {
+    if (pathWay == null) throw new IllegalArgumentException("Panel has no pathway");
+    return switch (pathWay) {
+      case NORTH -> northPanel;
+      case SOUTH -> southPanel;
+      case EAST -> eastPanel;
+      case WEST -> westPanel;
+    };
   }
 
   /**
@@ -125,12 +141,11 @@ public class Panel {
    */
   public void activatedBy(final Player player) throws IllegalStateException {
     switch (type) {
-      case BONUS -> applyBonusTo(player);
-      case DROP -> applyDropTo(player);
-      case HOME -> applyHealTo(player);
-      default -> {
-        throw new IllegalStateException("Unknown panel type: " + type);
-      }
+      case BONUS    -> applyBonusTo(player);
+      case DROP     -> applyDropTo(player);
+      case HOME     -> applyHealTo(player);
+      case NEUTRAL  -> {}
+      default       -> { throw new IllegalStateException("Unknown panel type: " + type); }
     }
   }
 }

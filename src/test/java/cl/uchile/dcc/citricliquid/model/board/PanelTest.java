@@ -31,47 +31,38 @@ class PanelTest {
   private Player suguri;
   private long testSeed;
 
+  /**
+   * <b>SETUP</b> <br>
+   */
   @BeforeEach
   public void setUp() {
     // Panels
-    testBonusPanel = new Panel(PanelType.BONUS);
-    testBossPanel = new Panel(PanelType.BOSS);
-    testDropPanel = new Panel(PanelType.DROP);
-    testEncounterPanel = new Panel(PanelType.ENCOUNTER);
-    testHomePanel = new Panel(PanelType.HOME);
-    testNeutralPanel = new Panel(PanelType.NEUTRAL);
+    testBonusPanel      = new Panel(PanelType.BONUS);
+    testBossPanel       = new Panel(PanelType.BOSS);
+    testDropPanel       = new Panel(PanelType.DROP);
+    testEncounterPanel  = new Panel(PanelType.ENCOUNTER);
+    testHomePanel       = new Panel(PanelType.HOME);
+    testNeutralPanel    = new Panel(PanelType.NEUTRAL);
     // Player
     testSeed            = new Random().nextLong();
     suguri              = new Player(PLAYER_NAME, BASE_HP, BASE_ATK, BASE_DEF, BASE_EVD);
   }
-
+  /**
+   * <b>TESTS</b> <br>
+   * <i>Constructors</i>
+   */
   @Test
   public void constructorTest() {
-    assertEquals(PanelType.BONUS, testBonusPanel.getType());
-    assertEquals(PanelType.BOSS, testBossPanel.getType());
-    assertEquals(PanelType.DROP, testDropPanel.getType());
+    assertEquals(PanelType.BONUS,     testBonusPanel.getType());
+    assertEquals(PanelType.BOSS,      testBossPanel.getType());
+    assertEquals(PanelType.DROP,      testDropPanel.getType());
     assertEquals(PanelType.ENCOUNTER, testEncounterPanel.getType());
-    assertEquals(PanelType.HOME, testHomePanel.getType());
-    assertEquals(PanelType.NEUTRAL, testNeutralPanel.getType());
+    assertEquals(PanelType.HOME,      testHomePanel.getType());
+    assertEquals(PanelType.NEUTRAL,   testNeutralPanel.getType());
   }
 
   @Test
   public void nextPanelTest() {
-    assertTrue(testNeutralPanel.getNextPanels().isEmpty());
-    final var expectedPanel1 = new Panel(PanelType.NEUTRAL);
-    final var expectedPanel2 = new Panel(PanelType.NEUTRAL);
-
-    testNeutralPanel.addNextPanel(expectedPanel1);
-    assertEquals(1, testNeutralPanel.getNextPanels().size());
-
-    testNeutralPanel.addNextPanel(expectedPanel2);
-    assertEquals(2, testNeutralPanel.getNextPanels().size());
-
-    testNeutralPanel.addNextPanel(expectedPanel2);
-    assertEquals(2, testNeutralPanel.getNextPanels().size());
-
-    assertEquals(Set.of(expectedPanel1, expectedPanel2),
-                 testNeutralPanel.getNextPanels());
   }
 
   @Test
