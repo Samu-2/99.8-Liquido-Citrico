@@ -33,14 +33,16 @@ class PanelTest {
 
   @BeforeEach
   public void setUp() {
+    // Panels
     testBonusPanel = new Panel(PanelType.BONUS);
     testBossPanel = new Panel(PanelType.BOSS);
     testDropPanel = new Panel(PanelType.DROP);
     testEncounterPanel = new Panel(PanelType.ENCOUNTER);
     testHomePanel = new Panel(PanelType.HOME);
     testNeutralPanel = new Panel(PanelType.NEUTRAL);
-    testSeed = new Random().nextLong();
-    suguri = new Player(PLAYER_NAME, BASE_HP, BASE_ATK, BASE_DEF, BASE_EVD);
+    // Player
+    testSeed            = new Random().nextLong();
+    suguri              = new Player(PLAYER_NAME, BASE_HP, BASE_ATK, BASE_DEF, BASE_EVD);
   }
 
   @Test
@@ -85,7 +87,7 @@ class PanelTest {
 
   @Test
   public void neutralPanelTest() {
-    final var expectedSuguri = suguri.copy();
+    final var expectedSuguri = new Player(suguri);
     testNeutralPanel.activatedBy(suguri);
     assertEquals(expectedSuguri, suguri);
   }
@@ -94,33 +96,32 @@ class PanelTest {
   @RepeatedTest(100)
   public void bonusPanelConsistencyTest() {
     int expectedStars = 0;
-    assertEquals(expectedStars, suguri.getStars());
+    assertEquals(expectedStars, suguri.getNorma().getStars());
     final var testRandom = new Random(testSeed);
     suguri.setSeed(testSeed);
     for (int normaLvl = 1; normaLvl <= 6; normaLvl++) {
       final int roll = testRandom.nextInt(6) + 1;
       testBonusPanel.activatedBy(suguri);
       expectedStars += roll * Math.min(3, normaLvl);
-      assertEquals(expectedStars, suguri.getStars(),
-                   "Test failed with seed: " + testSeed);
-      suguri.debugGetNorma().debugClear();
+      assertEquals(expectedStars, suguri.getNorma().getStars(), "Test failed with seed: " + testSeed);
+      suguri.getNorma().clear();
     }
   }
 
   @RepeatedTest(100)
   public void dropPanelConsistencyTest() {
     int expectedStars = 30;
-    suguri.increaseStarsBy(30);
-    assertEquals(expectedStars, suguri.getStars());
+    suguri.getNorma().addStars(30);
+    assertEquals(expectedStars, suguri.getNorma().getStars());
     final var testRandom = new Random(testSeed);
     suguri.setSeed(testSeed);
     for (int normaLvl = 1; normaLvl <= 6; normaLvl++) {
       final int roll = testRandom.nextInt(6) + 1;
       testDropPanel.activatedBy(suguri);
       expectedStars = Math.max(expectedStars - roll * normaLvl, 0);
-      assertEquals(expectedStars, suguri.getStars(),
+      assertEquals(expectedStars, suguri.getNorma().getStars(),
                    "Test failed with seed: " + testSeed);
-      suguri.debugGetNorma().debugClear();
+      suguri.getNorma().clear();
     }
   }
   // endregion

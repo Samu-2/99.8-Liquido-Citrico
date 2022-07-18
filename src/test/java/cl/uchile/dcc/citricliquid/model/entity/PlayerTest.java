@@ -38,28 +38,11 @@ public class PlayerTest {
     Assertions.assertTrue(expectedSuguri.equals(suguri));
   }
 
-  @Test
-  public void increaseStarsByTest() {
-    suguri.increaseStarsBy(1);
-    Assertions.assertEquals(1, suguri.getStars());
-    suguri.increaseStarsBy(2);
-    Assertions.assertEquals(3, suguri.getStars());
-  }
-
-  @Test
-  public void increaseWinsByTest(){
-    suguri.increaseWinsBy(1);
-    Assertions.assertEquals(1, suguri.getWins());
-    suguri.increaseWinsBy(2);
-    Assertions.assertEquals(3, suguri.getWins());
-  }
-
-  // DELETED: normaClearCheck, NOW RESPONSABILITY OF NORMA CLASS
-
+  // DELETED: increaseStarsByTest(), increaseWinsByTest(), normaClearCheck() RESPONSABILITY OF NORMA CLASS
   @Test
   public void copyTest() {
     final var expectedSuguri = new Player(PLAYER_NAME, 4, 1, -1, 2);
-    final var actualSuguri = suguri.copy();
+    final var actualSuguri = new Player(suguri);
     // Checks that the copied player have the same parameters as the original
     Assertions.assertTrue(expectedSuguri.equals(actualSuguri));
     // Checks that the copied player doesn't reference the same object

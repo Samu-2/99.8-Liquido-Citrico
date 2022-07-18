@@ -44,8 +44,8 @@ public class EntityTest {
 
   @Test
   public void copyTest() {
-    final var expectedGhost = new Player(ENTITY_NAME, 4, 1, -1, 2);
-    final var actualGhost = ghost.copy();
+    final var expectedGhost = new Entity(ENTITY_NAME, 4, 1, -1, 2);
+    final var actualGhost = new Entity(ghost);
     // Checks that the copied player have the same parameters as the original
     Assertions.assertTrue(ghost.equals(expectedGhost));
     // Checks that the copied player doesn't reference the same object

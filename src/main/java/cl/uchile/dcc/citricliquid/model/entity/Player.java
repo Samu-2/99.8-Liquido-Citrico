@@ -11,12 +11,14 @@ import cl.uchile.dcc.citricliquid.model.modules.Norma;
  * @since 1.0
  */
 public class Player extends Entity {
-  // ============== Attributes ==============
-  private final Norma norma;
-
-  // ============= constructors =============
   /**
-   * Creates a new character as an entity.
+   * <b>ATTRIBUTES</b> <br>
+   */
+  private Norma norma;
+
+  /**
+   * <b>CONSTRUCTORS</b> <br>
+   * By default, the player has maxHP, atk, def, evd and hp, a random random object and the default norma.
    * @param name the character's name.
    * @param maxHp the maximum hit points of the character.
    * @param atk the base damage the character does.
@@ -25,105 +27,40 @@ public class Player extends Entity {
    * @param hp the hp the character.
    * @param norma the norma of the character.
    */
-  private Player(final String name, final int maxHp, final int atk, final int def,
-                final int evd, final int hp, final Norma norma) {
+  private Player(final String name, final int maxHp, final int atk, final int def, final int evd, final int hp,
+                 final Norma norma) {
     super(name, maxHp, atk, def, evd, hp);
-    // The player starts with the basic norma
     this.norma = norma;
   }
-
-  /**
-   * Creates a new character.
-   * @param name the character's name.
-   * @param maxHp the initial (and max) hit points of the character.
-   * @param atk the base damage the character does.
-   * @param def the base defense of the character.
-   * @param evd the base evasion of the character.
-   */
-  public Player(final String name, final int maxHp, final int atk, final int def,
-                final int evd) {
-    // The player spawns with maxHP
+  public Player(final String name, final int maxHp, final int atk, final int def, final int evd) {
     this(name, maxHp, atk, def, evd, maxHp, new Norma());
   }
-
-  // ============= DEBUG ======================
-
-  public Norma debugGetNorma() {
-    return this.norma;
+  public Player(Player player) {
+    super(player);
+    this.norma = new Norma(player.norma);
   }
-
-  // ============= Getters =============
-
-  public Norma getNormaCpy() {
-    return this.norma.copy();
-  }
-
   /**
-   * Returns this player's wins count.
+   * <b>GETTERS</b> <br>
+   * Returns the asked attribute of the Player.
    */
-  public int getWins() { return this.norma.getWins(); }
+  public Norma getNorma() { return this.norma;}
+  /**
+  * <b>SETTERS</b> <br>
+  * Sets the asked attribute of the Player.
+  */
+  public void setNorma(Norma norma) { this.norma = norma; }
 
   /**
-   * Returns this player's star count.
-   */
-  public int getStars() { return this.norma.getStars();}
-
-  /**
-   * Returns the current norma level.
-   */
-  public int getNorma() {
-    return norma.getLevel();
-  }
-
-  // ========= Methods =========
-  /**
-   * Increases this player's star count by an amount.
-   */
-  public void increaseStarsBy(final int amount) { this.norma.addStars(amount);  }
-
-  /**
-   * Increases this player's wins count by an amount.
-   */
-  public void increaseWinsBy(final int amount) { this.norma.addWins(amount); }
-
-  /**
-   * Reduces this player's star count by a given amount.
-   */
-  public void reduceStarsBy(final int amount) { this.norma.removeStars(amount); }
-
-  /**
-   * Performs a norma clear action; the {@code norma} counter increases in 1.
-   *
-   * <p>This method is probably outdated
-   */
-  //TODO: CHECK THE LOGIC BEHIND THE METHOD, NEEDS TO BE REPLACED, NORMA SHOULD BE THE ONE
-  //     THAT IS RESPONSIBLE FOR THE NORMA CLEAR
-  public void normaCheck() { this.norma.check(); }
-
-
-  // ================= Obj Utilities ===============
-
-  /**
-   * Returns a copy of this character.
-   */
-  public Player copy() {
-    return new Player(this.getName(), this.getMaxHp(), this.getAtk(),
-            this.getDef(), this.getEvd(), this.getHp(), this.norma.copy());
-  }
-
-  // ================== Overrides ==================
-
-  /**
-   * Equals method for the player class.
+   * <b>OVERRIDES</b> <br> <br>
+   * <i>equals</i>
+   * @param obj the object to compare with.
+   * @return true if the objects are equal, false otherwise.
    */
   @Override
-  public boolean equals(final Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (!(o instanceof Player player)) {
-      return false;
-    }
-    return super.equals(player) && this.norma.equals(player.getNormaCpy());
+  public boolean equals(final Object obj) {
+    if (!(obj instanceof Player p)) return false;
+    if (p == this) return true;
+    return super.equals(p)
+        && this.norma.equals(p.norma);
   }
 }
