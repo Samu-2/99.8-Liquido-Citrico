@@ -34,6 +34,10 @@ public class Player extends Entity {
   public Player(String name, int maxHp, int atk, int def, int evd) {
     this(name, maxHp, atk, def, evd, maxHp, new Norma());
   }
+
+  public Player(String name, int maxHp, int atk, int def, int evd, int hp) {
+    this(name, maxHp, atk, def, evd, hp, new Norma());
+  }
   public Player(Player player) {
     super(player);
     this.norma = new Norma(player.norma);

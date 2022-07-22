@@ -106,6 +106,11 @@ public class Entity {
     this.hp = Math.min(hp + heal, maxHp);
     return hp == maxHp;
   }
+
+  public boolean isAlive() {
+    return hp > 0;
+  }
+
   /**
    * <b>Overrides</b> <br><br>
    * <i>equals</i>

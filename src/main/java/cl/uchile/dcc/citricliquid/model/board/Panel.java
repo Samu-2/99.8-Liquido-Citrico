@@ -1,8 +1,11 @@
 package cl.uchile.dcc.citricliquid.model.board;
 
+import cl.uchile.dcc.citricliquid.model.entity.Entity;
 import cl.uchile.dcc.citricliquid.model.entity.Player;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.*;
 
 /**
  * Class that represents a panel in the board of the game.
@@ -11,57 +14,42 @@ import org.jetbrains.annotations.NotNull;
  * @version 1.1.222804
  * @since 1.0
  */
-public class Panel {
+public abstract class Panel {
 
     /**
      * <b>ATTRIBUTES</b> <br>
      */
-    private PanelType type;
+
     private Panel northPanel, southPanel, eastPanel, westPanel;
     private int neighbors;
-
-    private Player[] playersStk;
-
+    private List<Player> players;
+    private Player homeOwner;
     private final int MAX_PLAYERS = 8;
 
     /**
      * <b>CONSTRUCTOR</b> <br>
      * Constructor of the panel.
      *
-     * @param type Type of the panel.
      */
 
-    private Panel(PanelType type, Panel northPanel, Panel southPanel, Panel eastPanel, Panel westPanel, int neighbors) {
-        this.type       = type;
+    private Panel(Panel northPanel, Panel southPanel, Panel eastPanel, Panel westPanel, int neighbors, Player homeOwner) {
         this.northPanel = northPanel;
         this.southPanel = southPanel;
         this.eastPanel  = eastPanel;
         this.westPanel  = westPanel;
         this.neighbors  = neighbors;
-        this.players    = new Player[MAX_PLAYERS];
+        this.players    = new ArrayList<>();
+        this.homeOwner  = homeOwner;
     }
-    public Panel(final PanelType type) {
-        this(type,
-                null,
-                null,
-                null,
-                null,
-                0);
+    public Panel() {
+        this(null, null, null, null, 0, null);
     }
-    public Panel(Panel panel) {
-        this(panel.type,
-                panel.northPanel,
-                panel.southPanel,
-                panel.westPanel,
-                panel.eastPanel,
-                panel.neighbors);}
+
 
     /**
      * <b>GETTERS</b>
      */
 
-    public PanelType getType()  { return type; }
-    public int getNeighbors()   { return neighbors; }
     public Panel getPanel(Direction direction) throws IllegalArgumentException {
         if (direction == null) throw new IllegalArgumentException("Panel has no pathway");
         return switch (direction) {
@@ -71,12 +59,11 @@ public class Panel {
             case WEST  -> westPanel;
         };
     }
-
     public Panel getPanelAuto(Panel panel) throws IllegalArgumentException {
         // check if there's one neighbor, if so return the same panel
-        if (neighbors == 1) return panel;
+        if (neighbors == 1 && panel != this) return this;
         // if there's 2 neighbors, check the others, return the one that's not the panel passed as argument
-        if (neighbors == 2) {
+        if ((neighbors == 2 && panel != this) || neighbors == 1) {
             // panels can be null, so check if they are null and return the other one that's not null
             // and not the panel passed as argument
             if (northPanel != null && northPanel != panel) return northPanel;
@@ -84,19 +71,24 @@ public class Panel {
             if (eastPanel  != null && eastPanel  != panel) return eastPanel;
             if (westPanel  != null && westPanel  != panel) return westPanel;
         }
-        throw new IllegalArgumentException("Unknown panel to choose with: " + neighbors + " neighbors");
+        throw new IllegalArgumentException("Unknown panel to choose with: " + neighbors + " neighbors provided with" + panel);
     }
 
-    public StopCode getStopCode(Player player) {
-        if (neighbors >= 3) return StopCode.INTERSECTION;
-        if ()
+    public int getNeighbors()   { return neighbors; }
+    public List<Player> getPlayers() {
+        return new ArrayList<>(players);
     }
+
+    public Player getHomeOwner() { return homeOwner; }
 
     /**
      * <b>SETTERS</b>
      */
-    public void setType(PanelType type) { this.type = type; }
-    public void setConnection(Direction direction, Panel panel) throws IllegalArgumentException {
+
+    /*
+
+    }*/
+    public void setConnection(Panel panel, Direction direction) throws IllegalArgumentException {
         if (panel == null) throw new IllegalArgumentException("Panel cannot be null");
         neighbors++;
         switch (direction) {
@@ -106,14 +98,47 @@ public class Panel {
             case WEST -> westPanel = panel;
             default -> throw new IllegalArgumentException("Unknown path way: " + direction);
         }
-        panel.setConnection(direction.getOppositeDirection(), this);
+        panel.neighbors++;
+        switch (direction.getOppositeDirection()) {
+            case NORTH -> panel.northPanel = this;
+            case SOUTH -> panel.southPanel = this;
+            case EAST -> panel.eastPanel = this;
+            case WEST -> panel.westPanel = this;
+            default -> throw new IllegalArgumentException("Unknown path way: " + direction);
+        }
     }
 
     /**
-     * <b>METHODS</b> <br>
+     * <b>METHODS</b> <br> <br>
      *
-     * Restores a player's HP in 1.
+     * Adds a player in the panel
      */
+
+    public Entity addPlayer(Player player) {
+        if (players.size() >= MAX_PLAYERS) throw new IllegalArgumentException("Panel is full");
+        players.add(player);
+        activatedBy(player);
+        return applyEffect(player);
+    }
+
+    /**
+     * Checks whether player may stop at the panel
+     */
+
+    public StopCode stopCode(Player player) {
+        if (players.size() >= 2) return StopCode.PLAYER;
+        if (homeOwner == player) return StopCode.HOME;
+        if (neighbors >= 3) return StopCode.INTERSECTION;
+        return StopCode.CLEAR;
+    }
+
+
+    /**
+     * Removes a player from the panel
+     */
+    public void removePlayer(Player player) {
+        players.remove(player);
+    }
     private static void applyHealTo(final @NotNull Player player) {
         player.heal(1);
     }
@@ -133,17 +158,9 @@ public class Panel {
         player.getNorma().addStars(player.roll() * Math.min(player.getNorma().getLevel(), 3));
     }
 
+    abstract Entity applyEffect(Player player);
 
     /**
      * Executes the appropriate action to the player according to this panel's type.
      */
-    public void activatedBy(final Player player) throws IllegalStateException {
-        switch (type) {
-            case BONUS    -> applyBonusTo(player);
-            case DROP     -> applyDropTo(player);
-            case HOME     -> applyHealTo(player);
-            case NEUTRAL  -> {}
-            default       -> throw new IllegalStateException("Unknown panel type: " + type);
-        }
-    }
 }

@@ -1,6 +1,7 @@
 package cl.uchile.dcc.citricliquid.view;
 
 import java.io.IOException;
+import java.util.*;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
