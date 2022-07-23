@@ -11,6 +11,7 @@ public class BossPanel extends Panel {
         bossFactory = new BossFactory();
     }
 
+    public PanelType getType(){ return PanelType.BOSS; }
     @Override
     Entity applyEffect(Player player) {
         return null;

@@ -59,7 +59,9 @@ public class Norma {
      * <i>equals</i> <br>
      * It does the clear of the norma. that is, adding one to it's level
      */
-    public void clear() { this.level += 1; }
+    public void clear() {
+        this.level += 1;
+    }
     /**
      * <i>check</i> <br>
      * It does the check for the norma to see if it's done taking into account the current goal

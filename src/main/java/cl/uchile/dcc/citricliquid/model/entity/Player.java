@@ -1,5 +1,6 @@
 package cl.uchile.dcc.citricliquid.model.entity;
 
+import cl.uchile.dcc.citricliquid.model.board.Panel;
 import cl.uchile.dcc.citricliquid.model.modules.Norma;
 
 /**
@@ -15,6 +16,7 @@ public class Player extends Entity {
    * <b>ATTRIBUTES</b> <br>
    */
   private Norma norma;
+  private Panel panel;
 
   /**
    * <b>CONSTRUCTORS</b> <br>
@@ -42,6 +44,18 @@ public class Player extends Entity {
     super(player);
     this.norma = new Norma(player.norma);
   }
+
+  public Player(String name) {
+    this(name, 4, 1, -1, 2);
+  }
+
+  /**
+   * <b>SETTERS</b> <br>
+   */
+  public void setPanel(Panel panel) {
+    this.panel = panel;
+  }
+
   /**
    * <b>GETTERS</b> <br>
    * Returns the asked attribute of the Player.
@@ -65,5 +79,9 @@ public class Player extends Entity {
     if (p == this) return true;
     return super.equals(p)
         && this.norma.equals(p.norma);
+  }
+
+  public Panel getPanel() {
+    return panel;
   }
 }

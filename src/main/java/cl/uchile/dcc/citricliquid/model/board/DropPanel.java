@@ -6,6 +6,8 @@ import cl.uchile.dcc.citricliquid.model.modules.Norma;
 
 public class DropPanel extends Panel {
     public DropPanel() { super(); }
+
+    public PanelType getType(){ return PanelType.DROP; }
     @Override
     Entity applyEffect(Player player) {
         Norma norma = player.getNorma();

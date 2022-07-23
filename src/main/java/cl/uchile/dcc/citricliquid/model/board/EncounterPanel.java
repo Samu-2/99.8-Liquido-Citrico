@@ -12,6 +12,7 @@ public class EncounterPanel extends Panel {
         wuFactory = new WildUnitFactory();
     }
 
+    public PanelType getType(){ return PanelType.ENCOUNTER; }
     @Override
     Entity applyEffect(Player player){
         return (Entity) wuFactory.getEnemy(player);

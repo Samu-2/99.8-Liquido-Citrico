@@ -2,8 +2,7 @@ package cl.uchile.dcc.citricliquid.model.board;
 
 import cl.uchile.dcc.citricliquid.model.entity.Entity;
 import cl.uchile.dcc.citricliquid.model.entity.Player;
-
-import org.jetbrains.annotations.NotNull;
+import javafx.scene.paint.Stop;
 
 import java.util.*;
 
@@ -23,7 +22,8 @@ public abstract class Panel {
     private Panel northPanel, southPanel, eastPanel, westPanel;
     private int neighbors;
     private List<Player> players;
-    private Player homeOwner;
+
+    private List<Panel> panels;
     private final int MAX_PLAYERS = 8;
 
     /**
@@ -32,17 +32,16 @@ public abstract class Panel {
      *
      */
 
-    private Panel(Panel northPanel, Panel southPanel, Panel eastPanel, Panel westPanel, int neighbors, Player homeOwner) {
+    private Panel(Panel northPanel, Panel southPanel, Panel eastPanel, Panel westPanel, int neighbors) {
         this.northPanel = northPanel;
         this.southPanel = southPanel;
         this.eastPanel  = eastPanel;
         this.westPanel  = westPanel;
         this.neighbors  = neighbors;
         this.players    = new ArrayList<>();
-        this.homeOwner  = homeOwner;
     }
     public Panel() {
-        this(null, null, null, null, 0, null);
+        this(null, null, null, null, 0);
     }
 
 
@@ -50,6 +49,9 @@ public abstract class Panel {
      * <b>GETTERS</b>
      */
 
+    public List<Panel> getPanels(){
+        return panels;
+    }
     public Panel getPanel(Direction direction) throws IllegalArgumentException {
         if (direction == null) throw new IllegalArgumentException("Panel has no pathway");
         return switch (direction) {
@@ -79,15 +81,10 @@ public abstract class Panel {
         return new ArrayList<>(players);
     }
 
-    public Player getHomeOwner() { return homeOwner; }
-
     /**
      * <b>SETTERS</b>
      */
 
-    /*
-
-    }*/
     public void setConnection(Panel panel, Direction direction) throws IllegalArgumentException {
         if (panel == null) throw new IllegalArgumentException("Panel cannot be null");
         neighbors++;
@@ -106,6 +103,8 @@ public abstract class Panel {
             case WEST -> panel.westPanel = this;
             default -> throw new IllegalArgumentException("Unknown path way: " + direction);
         }
+        panels.add(panel);
+        panel.panels.add(this);
     }
 
     /**
@@ -117,8 +116,14 @@ public abstract class Panel {
     public Entity addPlayer(Player player) {
         if (players.size() >= MAX_PLAYERS) throw new IllegalArgumentException("Panel is full");
         players.add(player);
-        activatedBy(player);
+        player.setPanel(this);
         return applyEffect(player);
+    }
+
+    public void putPlayer(Player player) {
+        if (players.size() >= MAX_PLAYERS) throw new IllegalArgumentException("Panel is full");
+        players.add(player);
+        player.setPanel(this);
     }
 
     /**
@@ -127,7 +132,6 @@ public abstract class Panel {
 
     public StopCode stopCode(Player player) {
         if (players.size() >= 2) return StopCode.PLAYER;
-        if (homeOwner == player) return StopCode.HOME;
         if (neighbors >= 3) return StopCode.INTERSECTION;
         return StopCode.CLEAR;
     }
@@ -138,27 +142,16 @@ public abstract class Panel {
      */
     public void removePlayer(Player player) {
         players.remove(player);
-    }
-    private static void applyHealTo(final @NotNull Player player) {
-        player.heal(1);
+        player.setPanel(null);
     }
 
-    /**
-     * Reduces the player's star count by the D6 roll multiplied by the player's norma level.
-     */
-    private static void applyDropTo(final @NotNull Player player) {
-        player.getNorma().subtractStars(player.roll() * player.getNorma().getLevel());
-    }
-
-    /**
-     * Reduces the player's star count by the D6 roll multiplied by the maximum between the player's
-     * norma level and three.
-     */
-    private static void applyBonusTo(final @NotNull Player player) {
-        player.getNorma().addStars(player.roll() * Math.min(player.getNorma().getLevel(), 3));
+    public Entity activatedBy(Player player){
+        return applyEffect(player);
     }
 
     abstract Entity applyEffect(Player player);
+
+    public abstract StopCode stopCode();
 
     /**
      * Executes the appropriate action to the player according to this panel's type.

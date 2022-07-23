@@ -21,9 +21,14 @@ class PanelTest {
     private final static int BASE_DEF = -1;
     private final static int BASE_EVD = 2;
     private final static int HP = 3;
-    private Panel testHomePanel, testNeutralPanel, testBonusPanel, testDropPanel, testEncounterPanel, testBossPanel;
+    private BonusPanel testBonusPanel;
+    private HomePanel testHomePanel;
+    private NeutralPanel testNeutralPanel;
+    private DropPanel testDropPanel;
+    private EncounterPanel testEncounterPanel;
+    private BossPanel testBossPanel;
 
-    private Panel panel1, panel2, panel3, panel4;
+    private NeutralPanel panel1, panel2, panel3, panel4;
     private Player suguri;
     private long testSeed;
 
@@ -33,18 +38,18 @@ class PanelTest {
     @BeforeEach
     public void setUp() {
         // Panels Types
-        testBonusPanel      = new Panel(PanelType.BONUS);
-        testBossPanel       = new Panel(PanelType.BOSS);
-        testDropPanel       = new Panel(PanelType.DROP);
-        testEncounterPanel  = new Panel(PanelType.ENCOUNTER);
-        testHomePanel       = new Panel(PanelType.HOME);
-        testNeutralPanel    = new Panel(PanelType.NEUTRAL);
+        testBonusPanel      = new BonusPanel();
+        testBossPanel       = new BossPanel();
+        testDropPanel       = new DropPanel();
+        testEncounterPanel  = new EncounterPanel();
+        testHomePanel       = new HomePanel();
+        testNeutralPanel    = new NeutralPanel();
 
         // Simple 4 panels
-        panel1 = new Panel(PanelType.NEUTRAL);
-        panel2 = new Panel(PanelType.NEUTRAL);
-        panel3 = new Panel(PanelType.NEUTRAL);
-        panel4 = new Panel(PanelType.NEUTRAL);
+        panel1 = new NeutralPanel();
+        panel2 = new NeutralPanel();
+        panel3 = new NeutralPanel();
+        panel4 = new NeutralPanel();
 
         // Player
         testSeed            = new Random().nextLong();
